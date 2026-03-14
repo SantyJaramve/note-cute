@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note-Cute - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/plugins.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/iconfont.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/css/luckysheet.css" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <div class="app-container">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">📝</span>
+          <span class="logo-text">Note-Cute</span>
+        </div>
+        <button class="btn-new-note" id="newNoteBtn">
+          <span>+</span> Nueva Nota
+        </button>
+      </div>
+      
+      <div class="notes-list" id="notesList">
+      </div>
+      
+      <div class="sidebar-footer">
+        <button class="btn-settings" id="settingsBtn">
+          ⚙️ Personalizar
+        </button>
+        <button class="btn-logout" id="logoutBtn">
+          🚪 Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+    
+    <main class="main-content">
+      <div class="note-workspace" id="noteWorkspace">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">📋</div>
+          <h2>Selecciona una nota o crea una nueva</h2>
+          <p>Tus notas están esperando por ti</p>
+        </div>
+        
+        <div class="note-editor" id="noteEditor" style="display: none;">
+          <div class="note-toolbar" id="noteToolbar">
+            <div class="toolbar-group">
+              <button class="toolbar-btn" data-command="bold" title="Negrita (Ctrl+B)">
+                <strong>B</strong>
+              </button>
+              <button class="toolbar-btn" data-command="italic" title="Cursiva (Ctrl+I)">
+                <em>I</em>
+              </button>
+              <button class="toolbar-btn" data-command="underline" title="Subrayado (Ctrl+U)">
+                <u>U</u>
+              </button>
+              <button class="toolbar-btn" data-command="strikeThrough" title="Tachado">
+                <s>S</s>
+              </button>
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" data-command="insertUnorderedList" title="Lista sin orden">
+                •
+              </button>
+              <button class="toolbar-btn" data-command="insertOrderedList" title="Lista ordenada">
+                1.
+              </button>
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" data-command="formatBlock" data-value="h1" title="Título 1">
+                H1
+              </button>
+              <button class="toolbar-btn" data-command="formatBlock" data-value="h2" title="Título 2">
+                H2
+              </button>
+              <button class="toolbar-btn" data-command="formatBlock" data-value="p" title="Párrafo">
+                P
+              </button>
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" id="highlightBtn" title="Resaltador">
+                🖌️
+              </button>
+              <input type="color" id="textColorPicker" title="Color de texto" class="color-picker">
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" id="insertTableBtn" title="Insertar Tabla Excel">
+                📊
+              </button>
+              <button class="toolbar-btn" id="insertImageBtn" title="Insertar Imagen">
+                🖼️
+              </button>
+              <button class="toolbar-btn" id="drawModeBtn" title="Modo Dibujo">
+                ✏️
+              </button>
+            </div>
+            
+            <div class="toolbar-group toolbar-right">
+              <span id="autoSaveStatus" style="font-size:11px;color:#00b894;opacity:0;transition:opacity 0.3s;margin-right:10px;">✓ Guardado automático</span>
+              <button class="toolbar-btn btn-save-note" id="saveNoteBtn" title="Guardar Nota">
+                💾 Guardar
+              </button>
+              <button class="toolbar-btn btn-delete-note" id="deleteNoteBtn" title="Eliminar Nota">
+                🗑️
+              </button>
+            </div>
+          </div>
+          
+          <input type="text" class="note-title" id="noteTitle" placeholder="Título de la nota" value="">
+          
+          <div class="note-content" id="noteContent" contenteditable="true" placeholder="Escribe aquí tu nota..."></div>
+        </div>
+      </div>
+    </main>
+    
+    <aside class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <h2>Personalizar</h2>
+        <button class="btn-close-settings" id="closeSettings">✕</button>
+      </div>
+      
+      <div class="settings-content">
+        <div class="settings-section">
+          <h3>🌐 Fondo de la Web</h3>
+          <div class="setting-item">
+            <label>Color de fondo</label>
+            <input type="color" id="webBackgroundColor" value="#f0f2f5">
+          </div>
+          <div class="setting-item">
+            <label>Imagen de fondo (URL)</label>
+            <input type="text" id="webBackgroundImage" placeholder="https://...">
+          </div>
+        </div>
+        
+        <div class="settings-section">
+          <h3>📝 Estilo de las Notas</h3>
+          <div class="setting-item">
+            <label>Color de fondo</label>
+            <input type="color" id="noteColor" value="#ffffff">
+          </div>
+          <div class="setting-item">
+            <label>Color del borde</label>
+            <input type="color" id="noteBorderColor" value="#e0e0e0">
+          </div>
+          <div class="setting-item">
+            <label>Grosor del borde</label>
+            <select id="noteBorderWidth">
+              <option value="0px">Sin borde</option>
+              <option value="1px">1px</option>
+              <option value="2px">2px</option>
+              <option value="3px">3px</option>
+              <option value="4px">4px</option>
+              <option value="5px">5px</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Forma (borde-radius)</label>
+            <input type="range" id="noteBorderRadius" min="0" max="30" value="12">
+            <span id="noteBorderRadiusValue">12px</span>
+          </div>
+          <div class="setting-item">
+            <label>Forma predefinida</label>
+            <div class="shape-presets">
+              <button class="shape-btn" data-shape="none" title="Sin forma">▢</button>
+              <button class="shape-btn" data-shape="0px" title="Cuadrado">□</button>
+              <button class="shape-btn" data-shape="15px" title="Redondeado">▢</button>
+              <button class="shape-btn" data-shape="50%" title="Círculo">○</button>
+              <button class="shape-btn" data-shape="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" title="Diamante">◇</button>
+              <button class="shape-btn" data-shape="clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" title="Estrella">★</button>
+              <button class="shape-btn" data-shape="clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" title="Pentágono">⬠</button>
+              <button class="shape-btn" data-shape="clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)" title="Octágono">⬢</button>
+              <button class="shape-btn" data-shape="clip-path: polygon(0% 20%, 60% 20%, 60% 0%, 100% 0%, 100% 80%, 20% 80%, 20% 100%, 0% 100%)" title="Bloque">▣</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>Ancho de la nota</label>
+            <input type="range" id="noteWidth" min="300" max="800" value="600">
+            <span id="noteWidthValue">600px</span>
+          </div>
+          <div class="setting-item">
+            <label>Tipo de fuente</label>
+            <select id="noteFontFamily">
+              <option value="Poppins">Poppins</option>
+              <option value="Arial">Arial</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Courier New">Courier New</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Verdana">Verdana</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Tamaño de fuente</label>
+            <select id="noteFontSize">
+              <option value="12px">12px</option>
+              <option value="14px">14px</option>
+              <option value="16px">16px</option>
+              <option value="18px">18px</option>
+              <option value="20px">20px</option>
+              <option value="22px">22px</option>
+              <option value="24px">24px</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>
+              <input type="checkbox" id="noteShadow" checked> Sombra
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>Opacidad</label>
+            <input type="range" id="noteOpacity" min="50" max="100" value="100">
+            <span id="noteOpacityValue">100%</span>
+          </div>
+        </div>
+        
+        <div class="settings-actions">
+          <button class="btn btn-primary" id="saveSettingsBtn">Guardar Configuración</button>
+        </div>
+      </div>
+    </aside>
+    
+    <div class="modal" id="imageModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Insertar Imagen</h3>
+          <button class="btn-close-modal" id="closeImageModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Desde URL</label>
+            <input type="text" id="imageUrl" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label>Desde archivo</label>
+            <input type="file" id="imageFile" accept="image/*">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="cancelImageBtn">Cancelar</button>
+          <button class="btn btn-primary" id="insertImageBtn2">Insertar</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="drawing-tools" id="drawingTools" style="display: none;">
+      <div class="drawing-toolbar">
+        <span class="drawing-title">✏️ Modo Dibujo</span>
+        <input type="color" id="drawColor" value="#000000" title="Color de línea">
+        <input type="range" id="drawSize" min="1" max="20" value="3" title="Grosor">
+        <button class="toolbar-btn" id="clearDraw" title="Limpiar">🗑️</button>
+        <button class="toolbar-btn" id="exitDrawMode" title="Salir">✕</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/auth.js"></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/editor.js" defer></script>
+  <script src="js/spreadsheet.js" defer></script>
+  <script src="js/drawing.js" defer></script>
+</body>
+</html>
