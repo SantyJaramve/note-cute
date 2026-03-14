@@ -21,7 +21,10 @@ initDatabase().then(() => {
   app.use('/api/notes', notesRoutes);
   app.use('/api/settings', settingsRoutes);
 
-  app.get('*', (req, res) => {
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
     if (req.path === '/' || req.path === '/index.html') {
       res.sendFile(path.join(__dirname, '../public/index.html'));
     } else {
