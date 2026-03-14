@@ -2,18 +2,22 @@ const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 
-const dbPath = path.join(__dirname, 'note-cute.db');
+const dbPath = process.env.RENDER ? null : path.join(__dirname, 'note-cute.db');
 let db = null;
 let SQL = null;
 
 async function initDatabase() {
   SQL = await initSqlJs();
 
-  if (fs.existsSync(dbPath)) {
+  if (dbPath && fs.existsSync(dbPath)) {
     const fileBuffer = fs.readFileSync(dbPath);
     db = new SQL.Database(fileBuffer);
   } else {
     db = new SQL.Database();
+  }
+
+  if (process.env.RENDER) {
+    db.run('PRAGMA journal_mode=MEMORY');
   }
 
   db.run(`

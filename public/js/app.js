@@ -1,4 +1,4 @@
-const getApiUrl = () => window.API_URL || 'http://localhost:3000/api';
+const getApiUrl = () => window.API_URL || (window.location.origin + '/api');
 
 const App = {
   notes: [],

@@ -1,4 +1,4 @@
-window.API_URL = 'http://localhost:3000/api';
+window.API_URL = window.location.origin + '/api';
 
 const Auth = {
   token: localStorage.getItem('noteCuteToken'),
@@ -144,6 +144,6 @@ if (typeof window !== 'undefined') {
 };
 
 if (typeof window !== 'undefined') {
-  window.API_URL = 'http://localhost:3000/api';
+window.API_URL = window.location.origin + '/api';
   window.Auth = Auth;
 }
