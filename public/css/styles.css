@@ -46,6 +46,26 @@
   --radius-xl: 32px;
 }
 
+/* Iconos Phosphor */
+i.ph, i.ph-fill, i.ph-bold, i.ph-duotone {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.logo-icon {
+  font-size: 36px !important;
+  color: var(--primary);
+}
+
+.empty-icon {
+  font-size: 80px !important;
+  color: var(--primary-light);
+}
+
+.toolbar-btn i.ph {
+  font-size: 18px;
+}
+
 * {
   margin: 0;
   padding: 0;
