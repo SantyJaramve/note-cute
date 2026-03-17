@@ -240,47 +240,26 @@ const Editor = {
 
   setupImageModal() {
     const insertImageBtn = document.getElementById('insertImageBtn');
-    const closeImageModal = document.getElementById('closeImageModal');
-    const cancelImageBtn = document.getElementById('cancelImageBtn');
-    const insertImageBtn2 = document.getElementById('insertImageBtn2');
+    const imageFileInput = document.getElementById('imageFileInput');
 
-    if (insertImageBtn) {
+    if (insertImageBtn && imageFileInput) {
       insertImageBtn.addEventListener('click', () => {
-        this.imageModal.classList.add('open');
+        imageFileInput.click();
       });
     }
 
-    if (closeImageModal) {
-      closeImageModal.addEventListener('click', () => {
-        this.imageModal.classList.remove('open');
-      });
-    }
-
-    if (cancelImageBtn) {
-      cancelImageBtn.addEventListener('click', () => {
-        this.imageModal.classList.remove('open');
-      });
-    }
-
-    if (insertImageBtn2) {
-      insertImageBtn2.addEventListener('click', () => {
-        this.insertImage();
+    if (imageFileInput) {
+      imageFileInput.addEventListener('change', async (e) => {
+        if (e.target.files && e.target.files[0]) {
+          const dataUrl = await this.fileToDataURL(e.target.files[0]);
+          this.insertImageFromSrc(dataUrl);
+          imageFileInput.value = '';
+        }
       });
     }
   },
 
-  async insertImage() {
-    const imageUrl = document.getElementById('imageUrl').value;
-    const imageFile = document.getElementById('imageFile').files[0];
-
-    let imageSrc = '';
-
-    if (imageFile) {
-      imageSrc = await this.fileToDataURL(imageFile);
-    } else if (imageUrl) {
-      imageSrc = imageUrl;
-    }
-
+  insertImageFromSrc(imageSrc) {
     if (imageSrc) {
       const wrapper = document.createElement('div');
       wrapper.className = 'floating-image';
@@ -297,11 +276,22 @@ const Editor = {
       
       const canvas = document.createElement('canvas');
       canvas.className = 'drawing-canvas';
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.pointerEvents = 'none';
       
       wrapper.appendChild(img);
       wrapper.appendChild(canvas);
 
       this.noteContent.appendChild(wrapper);
+
+      img.onload = () => {
+        canvas.width = img.offsetWidth;
+        canvas.height = img.offsetHeight;
+        canvas.style.width = img.offsetWidth + 'px';
+        canvas.style.height = img.offsetHeight + 'px';
+      };
 
       this.setupFloatingImage(wrapper);
 
@@ -309,10 +299,6 @@ const Editor = {
         Drawing.initCanvas(wrapper);
       }
     }
-
-    this.imageModal.classList.remove('open');
-    document.getElementById('imageUrl').value = '';
-    document.getElementById('imageFile').value = '';
   },
 
   fileToDataURL(file) {
@@ -332,8 +318,7 @@ const Editor = {
     if (!resizeHandle) {
       resizeHandle = document.createElement('div');
       resizeHandle.className = 'resize-handle';
-      resizeHandle.innerHTML = '<i class="ph-bold ph-dots-six" style="font-size:14px;color:white;"></i>';
-      resizeHandle.style.cssText = 'position:absolute;bottom:0px;right:0px;width:24px;height:24px;background:#B5A8D9;border-radius:50%;cursor:se-resize;z-index:100;display:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);';
+      resizeHandle.innerHTML = '<i class="ph-bold ph-dots-six-vertical" style="font-size:12px;color:white;"></i>';
       resizeHandle.title = 'Redimensionar';
       wrapper.appendChild(resizeHandle);
     }
@@ -341,9 +326,8 @@ const Editor = {
     let deleteHandle = wrapper.querySelector('.delete-handle');
     if (!deleteHandle) {
       deleteHandle = document.createElement('div');
-      deleteHandle.innerHTML = '<i class="ph-bold ph-x" style="font-size:12px;"></i>';
+      deleteHandle.innerHTML = '<i class="ph-bold ph-x" style="font-size:10px;"></i>';
       deleteHandle.className = 'delete-handle';
-      deleteHandle.style.cssText = 'position:absolute;top:-12px;right:-12px;width:26px;height:26px;background:#FFB4B4;color:white;border-radius:50%;cursor:pointer;z-index:101;display:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);';
       deleteHandle.title = 'Eliminar';
       wrapper.appendChild(deleteHandle);
     }
@@ -400,6 +384,11 @@ const Editor = {
         
         img.style.width = newWidth + 'px';
         img.style.height = newHeight + 'px';
+        
+        if (canvas) {
+          canvas.style.width = newWidth + 'px';
+          canvas.style.height = newHeight + 'px';
+        }
         
       } else if (wrapper._isDragging) {
         const dx = e.clientX - wrapper._dragStartX;

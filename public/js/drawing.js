@@ -75,6 +75,10 @@ const Drawing = {
 
     document.querySelectorAll('.floating-image').forEach(img => {
       img.classList.add('drawing-locked');
+      const canvas = img.querySelector('.drawing-canvas');
+      if (canvas) {
+        canvas.style.pointerEvents = 'auto';
+      }
     });
     
     this.setupCanvasEvents();
@@ -96,6 +100,10 @@ const Drawing = {
 
     document.querySelectorAll('.floating-image').forEach(img => {
       img.classList.remove('drawing-locked');
+      const canvas = img.querySelector('.drawing-canvas');
+      if (canvas) {
+        canvas.style.pointerEvents = 'none';
+      }
     });
 
     document.body.classList.remove('draw-mode-cursor');

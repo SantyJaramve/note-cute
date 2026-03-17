@@ -62,8 +62,8 @@
             
             <!-- Listas -->
             <div class="toolbar-group">
-              <button class="toolbar-btn" data-command="insertUnorderedList" title="Viñetas"><i class="ph ph-list-ul"></i></button>
-              <button class="toolbar-btn" data-command="insertOrderedList" title="Numeración"><i class="ph ph-list-ol"></i></button>
+              <button class="toolbar-btn" data-command="insertUnorderedList" title="Viñetas"><i class="ph ph-list-dashes"></i></button>
+              <button class="toolbar-btn" data-command="insertOrderedList" title="Numeración"><i class="ph ph-number-square-one"></i></button>
             </div>
             
             <!-- Color de texto -->
@@ -87,14 +87,8 @@
             <div class="toolbar-group">
               <button class="toolbar-btn" id="insertTableBtn" title="Tabla"><i class="ph ph-table"></i></button>
               <button class="toolbar-btn" id="insertImageBtn" title="Imagen"><i class="ph ph-image"></i></button>
+              <input type="file" id="imageFileInput" accept="image/*" style="display:none;">
               <button class="toolbar-btn" id="drawModeBtn" title="Dibujar"><i class="ph ph-pencil-simple"></i></button>
-            </div>
-            
-            <!-- Fondo página -->
-            <div class="toolbar-group">
-              <input type="color" id="bgColorPicker" value="#fdf6f0" title="Color fondo" class="color-picker">
-              <button class="toolbar-btn" id="bgColorBtn" title="Aplicar"><i class="ph ph-paint-roller"></i></button>
-              <input type="text" id="bgImageUrl" placeholder="URL" title="Imagen fondo" style="width:50px;padding:2px 4px;border:1px solid #ddd;border-radius:4px;font-size:10px;">
             </div>
             
             <!-- Guardar/Eliminar -->
@@ -110,29 +104,6 @@
         </div>
       </div>
     </main>
-    
-    <div class="modal" id="imageModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Insertar Imagen</h3>
-          <button class="btn-close-modal" id="closeImageModal">✕</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Desde URL</label>
-            <input type="text" id="imageUrl" placeholder="https://...">
-          </div>
-          <div class="form-group">
-            <label>Desde archivo</label>
-            <input type="file" id="imageFile" accept="image/*">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" id="cancelImageBtn">Cancelar</button>
-          <button class="btn btn-primary" id="insertImageBtn2">Insertar</button>
-        </div>
-      </div>
-    </div>
     
     <div class="drawing-tools" id="drawingTools" style="display: none;">
       <div class="drawing-toolbar">
