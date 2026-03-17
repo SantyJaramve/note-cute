@@ -272,7 +272,9 @@ const Editor = {
     if (!resizeHandle) {
       resizeHandle = document.createElement('div');
       resizeHandle.className = 'resize-handle';
-      resizeHandle.style.cssText = 'position:absolute;bottom:-8px;right:-8px;width:20px;height:20px;background:#B5A8D9;border-radius:50%;cursor:se-resize;z-index:100;display:none;';
+      resizeHandle.innerHTML = '<i class="ph-bold ph-dots-six" style="font-size:14px;color:white;"></i>';
+      resizeHandle.style.cssText = 'position:absolute;bottom:0px;right:0px;width:24px;height:24px;background:#B5A8D9;border-radius:50%;cursor:se-resize;z-index:100;display:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);';
+      resizeHandle.title = 'Redimensionar';
       wrapper.appendChild(resizeHandle);
     }
 
@@ -281,7 +283,8 @@ const Editor = {
       deleteHandle = document.createElement('div');
       deleteHandle.innerHTML = '<i class="ph-bold ph-x" style="font-size:12px;"></i>';
       deleteHandle.className = 'delete-handle';
-      deleteHandle.style.cssText = 'position:absolute;top:-10px;right:-10px;width:24px;height:24px;background:#FFB4B4;color:white;border-radius:50%;cursor:pointer;z-index:101;display:none;display:flex;align-items:center;justify-content:center;';
+      deleteHandle.style.cssText = 'position:absolute;top:-12px;right:-12px;width:26px;height:26px;background:#FFB4B4;color:white;border-radius:50%;cursor:pointer;z-index:101;display:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);';
+      deleteHandle.title = 'Eliminar';
       wrapper.appendChild(deleteHandle);
     }
 
@@ -291,11 +294,12 @@ const Editor = {
     const handleMouseDown = function(e) {
       if (wrapper.classList.contains('drawing-locked')) return;
       
-      if (e.target === resizeHandle || resizeHandle.contains(e.target)) {
+      if (e.target === resizeHandle || resizeHandle.contains(e.target) || e.target.classList.contains('resize-handle')) {
         wrapper._isResizing = true;
         wrapper._startX = e.clientX;
         wrapper._startY = e.clientY;
         wrapper._initialWidth = img.offsetWidth;
+        wrapper._initialHeight = img.offsetHeight;
         if (canvas) {
           wrapper._oldCanvasData = canvas.toDataURL();
           wrapper._oldCanvasWidth = canvas.width;
@@ -322,9 +326,21 @@ const Editor = {
     const handleMouseMove = function(e) {
       if (wrapper._isResizing) {
         const dx = e.clientX - wrapper._startX;
-        const newWidth = Math.max(50, wrapper._initialWidth + dx);
+        const dy = e.clientY - wrapper._startY;
+        
+        const aspectRatio = wrapper._initialHeight / wrapper._initialWidth;
+        
+        let newWidth = Math.max(80, wrapper._initialWidth + dx);
+        let newHeight = newWidth * aspectRatio;
+        
+        if (Math.abs(dy) > Math.abs(dx)) {
+          newHeight = Math.max(80, wrapper._initialHeight + dy);
+          newWidth = newHeight / aspectRatio;
+        }
+        
         img.style.width = newWidth + 'px';
-        img.style.height = 'auto';
+        img.style.height = newHeight + 'px';
+        
       } else if (wrapper._isDragging) {
         const dx = e.clientX - wrapper._dragStartX;
         const dy = e.clientY - wrapper._dragStartY;
@@ -335,20 +351,25 @@ const Editor = {
 
     const handleMouseUp = function() {
       if (wrapper._isResizing && canvas && wrapper._oldCanvasData) {
-        const newWidth = img.offsetWidth;
-        const scale = newWidth / wrapper._initialWidth;
+        const scaleX = img.offsetWidth / wrapper._initialWidth;
+        const scaleY = img.offsetHeight / wrapper._initialHeight;
         
-        canvas.width = Math.round(wrapper._oldCanvasWidth * scale);
-        canvas.height = Math.round(wrapper._oldCanvasHeight * scale);
+        canvas.width = Math.round(wrapper._oldCanvasWidth * scaleX);
+        canvas.height = Math.round(wrapper._oldCanvasHeight * scaleY);
         
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
         
         const tempImg = new Image();
         tempImg.onload = function() {
           ctx.drawImage(tempImg, 0, 0, canvas.width, canvas.height);
         };
         tempImg.src = wrapper._oldCanvasData;
+        
+        delete wrapper._oldCanvasData;
+        delete wrapper._oldCanvasWidth;
+        delete wrapper._oldCanvasHeight;
       }
       
       wrapper._isDragging = false;
