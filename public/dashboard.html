@@ -46,132 +46,61 @@
         
         <div class="note-editor" id="noteEditor" style="display: none;">
           <div class="note-toolbar" id="noteToolbar">
+            <!-- Texto -->
             <div class="toolbar-group">
               <button class="toolbar-btn" data-command="bold" title="Negrita"><b>B</b></button>
               <button class="toolbar-btn" data-command="italic" title="Cursiva"><i>I</i></button>
               <button class="toolbar-btn" data-command="underline" title="Subrayado"><u>S</u></button>
             </div>
             
+            <!-- Párrafos -->
             <div class="toolbar-group">
-              <button class="toolbar-btn" data-command="insertUnorderedList" title="Lista"><i class="ph ph-list-ul"></i></button>
-              <button class="toolbar-btn" data-command="insertOrderedList" title="Lista numerada"><i class="ph ph-list-ol"></i></button>
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" data-command="formatBlock" data-value="h1" title="Título grande">H1</button>
-              <button class="toolbar-btn" data-command="formatBlock" data-value="h2" title="Título">H2</button>
+              <button class="toolbar-btn" data-command="formatBlock" data-value="h1" title="Título">H1</button>
+              <button class="toolbar-btn" data-command="formatBlock" data-value="h2" title="Subtítulo">H2</button>
               <button class="toolbar-btn" data-command="formatBlock" data-value="p" title="Párrafo">P</button>
             </div>
             
+            <!-- Listas -->
             <div class="toolbar-group">
-              <input type="color" id="textColorPicker" value="#5d5d5d" title="Color de texto" class="color-picker" style="width:28px;height:28px;">
-              <input type="color" id="highlightColorPicker" value="#ffeaa7" title="Color de resaltador" class="color-picker" style="width:28px;height:28px;">
-              <button class="toolbar-btn" id="highlightBtn" title="Resaltador"><i class="ph ph-highlighter"></i></button>
+              <button class="toolbar-btn" data-command="insertUnorderedList" title="Viñetas"><i class="ph ph-list-ul"></i></button>
+              <button class="toolbar-btn" data-command="insertOrderedList" title="Numeración"><i class="ph ph-list-ol"></i></button>
             </div>
             
+            <!-- Color de texto -->
             <div class="toolbar-group">
-              <input type="color" id="noteColorPicker" value="#ffffff" title="Color de nota" class="color-picker" style="width:28px;height:28px;">
-              <button class="toolbar-btn" id="noteColorBtn" title="Aplicar color"><i class="ph ph-paint-bucket"></i></button>
+              <input type="color" id="textColorPicker" value="#5d5d5d" title="Color texto" class="color-picker">
             </div>
             
+            <!-- Color de nota -->
             <div class="toolbar-group">
-              <input type="color" id="bgColorPicker" value="#fdf6f0" title="Color de fondo" class="color-picker" style="width:28px;height:28px;">
-              <button class="toolbar-btn" id="bgColorBtn" title="Aplicar fondo"><i class="ph ph-paint-roller"></i></button>
-              <input type="text" id="bgImageUrl" placeholder="URL" title="Imagen de fondo" style="width:70px;padding:4px 6px;border:1px solid #ddd;border-radius:4px;font-size:11px;">
+              <input type="color" id="noteColorPicker" value="#ffffff" title="Color nota" class="color-picker">
+              <button class="toolbar-btn" id="noteColorBtn" title="Aplicar"><i class="ph ph-paint-bucket"></i></button>
             </div>
             
+            <!-- Resaltador -->
+            <div class="toolbar-group">
+              <input type="color" id="highlightColorPicker" value="#ffeaa7" title="Color resaltador" class="color-picker">
+              <button class="toolbar-btn" id="highlightBtn" title="Resaltar"><i class="ph ph-highlighter"></i></button>
+            </div>
+            
+            <!-- Insertar -->
             <div class="toolbar-group">
               <button class="toolbar-btn" id="insertTableBtn" title="Tabla"><i class="ph ph-table"></i></button>
               <button class="toolbar-btn" id="insertImageBtn" title="Imagen"><i class="ph ph-image"></i></button>
               <button class="toolbar-btn" id="drawModeBtn" title="Dibujar"><i class="ph ph-pencil-simple"></i></button>
             </div>
             
+            <!-- Fondo página -->
+            <div class="toolbar-group">
+              <input type="color" id="bgColorPicker" value="#fdf6f0" title="Color fondo" class="color-picker">
+              <button class="toolbar-btn" id="bgColorBtn" title="Aplicar"><i class="ph ph-paint-roller"></i></button>
+              <input type="text" id="bgImageUrl" placeholder="URL" title="Imagen fondo" style="width:50px;padding:2px 4px;border:1px solid #ddd;border-radius:4px;font-size:10px;">
+            </div>
+            
+            <!-- Guardar/Eliminar -->
             <div class="toolbar-group toolbar-right">
               <button class="toolbar-btn btn-save-note" id="saveNoteBtn" title="Guardar"><i class="ph-bold ph-floppy-disk"></i></button>
               <button class="toolbar-btn btn-delete-note" id="deleteNoteBtn" title="Eliminar"><i class="ph ph-trash"></i></button>
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" data-command="insertUnorderedList" title="Lista sin orden">
-                •
-              </button>
-              <button class="toolbar-btn" data-command="insertOrderedList" title="Lista ordenada">
-                1.
-              </button>
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" data-command="formatBlock" data-value="h1" title="Título 1">
-                H1
-              </button>
-              <button class="toolbar-btn" data-command="formatBlock" data-value="h2" title="Título 2">
-                H2
-              </button>
-              <button class="toolbar-btn" data-command="formatBlock" data-value="p" title="Párrafo">
-                P
-              </button>
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" id="highlightBtn" title="Resaltador">
-                <i class="ph ph-highlighter"></i>
-              </button>
-              <input type="color" id="highlightColorPicker" value="#ffeaa7" title="Color de resaltador" class="color-picker" style="width:30px;height:30px;">
-              <input type="color" id="textColorPicker" title="Color de texto" class="color-picker">
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" data-command="formatBlock" data-value="p" title="Párrafo">
-                P
-              </button>
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" id="noteColorBtn" title="Color de nota">
-                <i class="ph ph-paint-bucket"></i>
-              </button>
-              <input type="color" id="noteColorPicker" value="#ffffff" title="Elegir color de nota" class="color-picker" style="width:30px;height:30px;">
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" id="highlightBtn" title="Resaltador">
-                <i class="ph ph-highlighter"></i>
-              </button>
-              <input type="color" id="highlightColorPicker" value="#ffeaa7" title="Color de resaltador" class="color-picker" style="width:30px;height:30px;">
-              <input type="color" id="textColorPicker" title="Color de texto" class="color-picker">
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" id="bgColorBtn" title="Color de fondo">
-                <i class="ph ph-paint-roller"></i>
-              </button>
-              <input type="color" id="bgColorPicker" value="#fdf6f0" title="Elegir color de fondo" class="color-picker" style="width:30px;height:30px;">
-              <button class="toolbar-btn" id="bgImageBtn" title="Imagen de fondo">
-                <i class="ph ph-image"></i>
-              </button>
-              <input type="text" id="bgImageUrl" placeholder="URL imagen" style="width:100px;padding:4px 8px;border:1px solid #ddd;border-radius:4px;font-size:12px;">
-            </div>
-            
-            <div class="toolbar-group">
-              <button class="toolbar-btn" id="insertTableBtn" title="Insertar Tabla">
-                <i class="ph ph-table"></i>
-              </button>
-              <button class="toolbar-btn" id="insertImageBtn" title="Insertar Imagen">
-                <i class="ph ph-image"></i>
-              </button>
-              <button class="toolbar-btn" id="drawModeBtn" title="Modo Dibujo">
-                <i class="ph ph-pencil-simple"></i>
-              </button>
-            </div>
-            
-            <div class="toolbar-group toolbar-right">
-              <span id="autoSaveStatus" style="font-size:11px;color:#00b894;opacity:0;transition:opacity 0.3s;margin-right:10px;"><i class="ph-bold ph-check-circle"></i> Guardado automático</span>
-              <button class="toolbar-btn btn-save-note" id="saveNoteBtn" title="Guardar Nota">
-                <i class="ph-bold ph-floppy-disk"></i> Guardar
-              </button>
-              <button class="toolbar-btn btn-delete-note" id="deleteNoteBtn" title="Eliminar Nota">
-                <i class="ph ph-trash"></i>
-              </button>
             </div>
           </div>
           
