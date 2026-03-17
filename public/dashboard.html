@@ -68,7 +68,7 @@
             
             <!-- Color de texto -->
             <div class="toolbar-group">
-              <input type="color" id="textColorPicker" value="#5d5d5d" title="Color texto" class="color-picker">
+              <input type="color" id="textColorPicker" value="#000000" title="Color texto" class="color-picker">
             </div>
             
             <!-- Color de nota -->
@@ -89,6 +89,7 @@
               <button class="toolbar-btn" id="insertImageBtn" title="Imagen"><i class="ph ph-image"></i></button>
               <input type="file" id="imageFileInput" accept="image/*" style="display:none;">
               <button class="toolbar-btn" id="drawModeBtn" title="Dibujar"><i class="ph ph-pencil-simple"></i></button>
+              <button class="toolbar-btn" id="insertStickerBtn" title="Stickers">✨</button>
             </div>
             
             <!-- Guardar/Eliminar -->
@@ -114,6 +115,14 @@
         <button class="toolbar-btn" id="exitDrawMode" title="Salir"><i class="ph ph-x"></i></button>
       </div>
     </div>
+
+    <div class="sticker-panel" id="stickerPanel" style="display: none;">
+      <div class="sticker-header">
+        <span><i class="ph ph-sticker"></i> Stickers</span>
+        <button class="toolbar-btn" id="closeStickerPanel"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="sticker-grid" id="stickerGrid"></div>
+    </div>
   </div>
   
   <script src="js/auth.js"></script>
@@ -121,5 +130,93 @@
   <script src="js/editor.js" defer></script>
   <script src="js/spreadsheet.js" defer></script>
   <script src="js/drawing.js" defer></script>
+  <script src="js/stickers.js"></script>
+  <script>
+    // Sticker functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const stickerBtn = document.getElementById('insertStickerBtn');
+      const stickerPanel = document.getElementById('stickerPanel');
+      const closeStickerBtn = document.getElementById('closeStickerPanel');
+      const stickerGrid = document.getElementById('stickerGrid');
+      
+      if (stickerBtn && stickerPanel) {
+        stickerBtn.addEventListener('click', function() {
+          if (stickerPanel.style.display === 'none') {
+            stickerPanel.style.display = 'block';
+            loadStickers();
+          } else {
+            stickerPanel.style.display = 'none';
+          }
+        });
+      }
+      
+      if (closeStickerBtn) {
+        closeStickerBtn.addEventListener('click', function() {
+          stickerPanel.style.display = 'none';
+        });
+      }
+      
+      function loadStickers() {
+        if (stickerGrid && stickerData && stickerData.stickers) {
+          stickerGrid.innerHTML = '';
+          stickerData.stickers.forEach(function(sticker) {
+            const div = document.createElement('div');
+            div.className = 'sticker-item';
+            div.title = sticker.name;
+            div.innerHTML = '<img src="' + sticker.url + '" alt="' + sticker.name + '">';
+            div.addEventListener('click', function() {
+              insertSticker(sticker.url);
+              stickerPanel.style.display = 'none';
+            });
+            stickerGrid.appendChild(div);
+          });
+        }
+      }
+      
+      function insertSticker(url) {
+        const noteContent = document.getElementById('noteContent');
+        if (!noteContent) return;
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = 'floating-image';
+        wrapper.style.position = 'absolute';
+        wrapper.style.zIndex = '50';
+        wrapper.style.left = '50px';
+        wrapper.style.top = '50px';
+        
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.maxWidth = '150px';
+        img.style.display = 'block';
+        
+        const canvas = document.createElement('canvas');
+        canvas.className = 'drawing-canvas';
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.pointerEvents = 'none';
+        
+        wrapper.appendChild(img);
+        wrapper.appendChild(canvas);
+        
+        noteContent.appendChild(wrapper);
+        
+        img.onload = function() {
+          canvas.width = img.offsetWidth;
+          canvas.height = img.offsetHeight;
+          canvas.style.width = img.offsetWidth + 'px';
+          canvas.style.height = img.offsetHeight + 'px';
+        };
+        
+        if (typeof Editor !== 'undefined' && Editor.setupFloatingImage) {
+          Editor.setupFloatingImage(wrapper);
+        }
+        
+        if (typeof Drawing !== 'undefined' && Drawing.initCanvas) {
+          Drawing.initCanvas(wrapper);
+        }
+      }
+    });
+  </script>
 </body>
 </html>

@@ -374,17 +374,17 @@ const App = {
 
   async createNote() {
     try {
-      const defaultStyle = this.currentSettings ? {
-        backgroundColor: this.currentSettings.default_note_color || '#ffffff',
-        borderColor: this.currentSettings.default_note_border_color || '#e0e0e0',
-        borderWidth: this.currentSettings.default_note_border || '1px',
-        borderRadius: this.currentSettings.default_note_border_radius || '12px',
-        width: this.currentSettings.default_note_width || '600px',
-        fontFamily: this.currentSettings.default_note_font_family || 'Poppins',
-        fontSize: this.currentSettings.default_note_font_size || '14px',
-        shadow: this.currentSettings.default_note_shadow !== 0,
-        opacity: this.currentSettings.default_note_opacity || 100
-      } : {};
+      const defaultStyle = {
+        backgroundColor: '#ffffff',
+        borderColor: '#e0e0e0',
+        borderWidth: '1px',
+        borderRadius: '12px',
+        width: '600px',
+        fontFamily: 'Poppins',
+        fontSize: '14px',
+        shadow: true,
+        opacity: 100
+      };
 
       const response = await fetch(`${getApiUrl()}/notes`, {
         method: 'POST',

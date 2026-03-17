@@ -929,3 +929,60 @@ body.login-page {
     border-radius: 0;
   }
 }
+
+/* Sticker Panel */
+.sticker-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-hover);
+  padding: 16px;
+  z-index: 1000;
+  max-width: 90%;
+  width: 400px;
+}
+
+.sticker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sticker-header .toolbar-btn {
+  padding: 4px;
+}
+
+.sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.sticker-item {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sticker-item:hover {
+  background: var(--primary-light);
+  transform: scale(1.1);
+}
+
+.sticker-item img {
+  max-width: 60px;
+  max-height: 60px;
+  object-fit: contain;
+}

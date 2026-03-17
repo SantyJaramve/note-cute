@@ -172,12 +172,14 @@ const Editor = {
 
     if (textColorPicker) {
       textColorPicker.addEventListener('input', (e) => {
-        document.execCommand('foreColor', false, e.target.value);
-        this.noteContent.focus();
+        this.applyTextColor(e.target.value);
+      });
+      
+      textColorPicker.addEventListener('change', (e) => {
+        this.applyTextColor(e.target.value);
       });
     }
 
-    // Note color button
     const noteColorBtn = document.getElementById('noteColorBtn');
     const noteColorPicker = document.getElementById('noteColorPicker');
     
@@ -197,7 +199,6 @@ const Editor = {
       });
     }
 
-    // Background color button
     const bgColorBtn = document.getElementById('bgColorBtn');
     const bgColorPicker = document.getElementById('bgColorPicker');
     const bgImageUrl = document.getElementById('bgImageUrl');
@@ -236,6 +237,11 @@ const Editor = {
         }
       });
     }
+  },
+  
+  applyTextColor(color) {
+    document.execCommand('foreColor', false, color);
+    this.noteContent.focus();
   },
 
   setupImageModal() {
@@ -517,14 +523,13 @@ const Editor = {
   },
 
   applyNoteStyle(style) {
-    if (!style) return;
+    if (!style) style = {};
 
     const noteEditor = document.getElementById('noteEditor');
     if (!noteEditor) return;
 
-    if (style.backgroundColor) {
-      noteEditor.style.setProperty('--note-bg', style.backgroundColor);
-    }
+    noteEditor.style.setProperty('--note-bg', style.backgroundColor || '#ffffff');
+
     if (style.borderColor) {
       noteEditor.style.setProperty('--note-border-color', style.borderColor);
     }
