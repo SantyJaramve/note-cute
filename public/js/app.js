@@ -208,18 +208,28 @@ const App = {
   async saveSettings() {
     const getApiUrl = () => window.API_URL || (window.location.origin + '/api');
     
+    const getVal = (id, def) => {
+      const el = document.getElementById(id);
+      return el ? el.value : def;
+    };
+    
+    const getCheck = (id, def) => {
+      const el = document.getElementById(id);
+      return el ? el.checked : def;
+    };
+    
     const settings = {
-      web_background: document.getElementById('webBackgroundColor')?.value || '#fdf6f0',
-      web_background_image: document.getElementById('webBackgroundImage')?.value || '',
-      default_note_color: document.getElementById('noteColor')?.value || '#ffffff',
-      default_note_border_color: document.getElementById('noteBorderColor')?.value || '#f0e6e0',
-      default_note_border: document.getElementById('noteBorderWidth')?.value || '1px',
+      web_background: getVal('webBackgroundColor', '#fdf6f0'),
+      web_background_image: getVal('webBackgroundImage', ''),
+      default_note_color: getVal('noteColor', '#ffffff'),
+      default_note_border_color: getVal('noteBorderColor', '#f0e6e0'),
+      default_note_border: getVal('noteBorderWidth', '1px'),
       default_note_border_radius: '16px',
-      default_note_width: (document.getElementById('noteWidth')?.value || 900) + 'px',
-      default_note_font_family: document.getElementById('noteFontFamily')?.value || 'Nunito',
-      default_note_font_size: document.getElementById('noteFontSize')?.value || '16px',
-      default_note_shadow: document.getElementById('noteShadow')?.checked ? 1 : 1,
-      default_note_opacity: parseInt(document.getElementById('noteOpacity')?.value || 100),
+      default_note_width: getVal('noteWidth', '900') + 'px',
+      default_note_font_family: getVal('noteFontFamily', 'Nunito'),
+      default_note_font_size: getVal('noteFontSize', '16px'),
+      default_note_shadow: getCheck('noteShadow', true) ? 1 : 0,
+      default_note_opacity: parseInt(getVal('noteOpacity', '100')),
       default_note_clip_path: ''
     };
 
