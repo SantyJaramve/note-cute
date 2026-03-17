@@ -72,8 +72,6 @@ const App = {
     const noteColor = document.getElementById('noteColor');
     const noteBorderColor = document.getElementById('noteBorderColor');
     const noteBorderWidth = document.getElementById('noteBorderWidth');
-    const noteBorderRadius = document.getElementById('noteBorderRadius');
-    const noteBorderRadiusValue = document.getElementById('noteBorderRadiusValue');
     const noteWidth = document.getElementById('noteWidth');
     const noteWidthValue = document.getElementById('noteWidthValue');
     const noteFontFamily = document.getElementById('noteFontFamily');
@@ -82,29 +80,8 @@ const App = {
     const noteOpacity = document.getElementById('noteOpacity');
     const noteOpacityValue = document.getElementById('noteOpacityValue');
 
-    document.querySelectorAll('.shape-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const shape = btn.dataset.shape;
-        const noteEditor = document.getElementById('noteEditor');
-        
-        if (noteEditor) {
-          if (shape === 'none' || shape === '') {
-            noteEditor.style.setProperty('--note-radius', '12px');
-            noteEditor.style.setProperty('--note-clip-path', 'none');
-          } else if (shape.includes('clip-path')) {
-            noteEditor.style.setProperty('--note-radius', '0');
-            noteEditor.style.setProperty('--note-clip-path', shape.replace('clip-path: ', ''));
-          } else {
-            noteEditor.style.setProperty('--note-radius', shape);
-            noteEditor.style.setProperty('--note-clip-path', 'none');
-          }
-        }
-      });
-    });
-
+    // Eliminar listeners de shapes ya que no existen
+    
     if (webBgColor) {
       webBgColor.addEventListener('input', (e) => {
         document.body.style.background = e.target.value;
@@ -133,13 +110,6 @@ const App = {
     if (noteFontSize) noteFontSize.addEventListener('change', applyNoteStyle);
     if (noteShadow) noteShadow.addEventListener('change', applyNoteStyle);
     if (noteOpacity) noteOpacity.addEventListener('input', applyNoteStyle);
-
-    if (noteBorderRadius && noteBorderRadiusValue) {
-      noteBorderRadius.addEventListener('input', (e) => {
-        noteBorderRadiusValue.textContent = e.target.value + 'px';
-        document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-      });
-    }
 
     if (noteWidth && noteWidthValue) {
       noteWidth.addEventListener('input', (e) => {
@@ -189,20 +159,30 @@ const App = {
       document.body.style.backgroundPosition = 'center';
     }
 
-    document.getElementById('webBackgroundColor').value = settings.web_background || '#f0f2f5';
-    document.getElementById('webBackgroundImage').value = settings.web_background_image || '';
-    document.getElementById('noteColor').value = settings.default_note_color || '#ffffff';
-    document.getElementById('noteBorderColor').value = settings.default_note_border_color || '#e0e0e0';
-    document.getElementById('noteBorderWidth').value = settings.default_note_border || '1px';
-    document.getElementById('noteBorderRadius').value = parseInt(settings.default_note_border_radius) || 12;
-    document.getElementById('noteBorderRadiusValue').textContent = settings.default_note_border_radius || '12px';
-    document.getElementById('noteWidth').value = parseInt(settings.default_note_width) || 600;
-    document.getElementById('noteWidthValue').textContent = settings.default_note_width || '600px';
-    document.getElementById('noteFontFamily').value = settings.default_note_font_family || 'Poppins';
-    document.getElementById('noteFontSize').value = settings.default_note_font_size || '14px';
-    document.getElementById('noteShadow').checked = settings.default_note_shadow !== 0;
-    document.getElementById('noteOpacity').value = settings.default_note_opacity || 100;
-    document.getElementById('noteOpacityValue').textContent = (settings.default_note_opacity || 100) + '%';
+    const setVal = (id, val, isCheckbox = false) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (isCheckbox) {
+        el.checked = val;
+      } else if (el.tagName === 'SPAN') {
+        el.textContent = val;
+      } else {
+        el.value = val;
+      }
+    };
+
+    setVal('webBackgroundColor', settings.web_background || '#fdf6f0');
+    setVal('webBackgroundImage', settings.web_background_image || '');
+    setVal('noteColor', settings.default_note_color || '#ffffff');
+    setVal('noteBorderColor', settings.default_note_border_color || '#f0e6e0');
+    setVal('noteBorderWidth', settings.default_note_border || '1px');
+    setVal('noteWidth', parseInt(settings.default_note_width) || 900);
+    setVal('noteWidthValue', settings.default_note_width || '900px');
+    setVal('noteFontFamily', settings.default_note_font_family || 'Nunito');
+    setVal('noteFontSize', settings.default_note_font_size || '16px');
+    setVal('noteShadow', settings.default_note_shadow !== 0, true);
+    setVal('noteOpacity', settings.default_note_opacity || 100);
+    setVal('noteOpacityValue', (settings.default_note_opacity || 100) + '%');
   },
 
   async saveSettings() {
