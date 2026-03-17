@@ -6,7 +6,7 @@
   <title>Note-Cute - Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/plugins.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/iconfont.css" rel="stylesheet">
@@ -162,37 +162,18 @@
             </select>
           </div>
           <div class="setting-item">
-            <label>Forma (borde-radius)</label>
-            <input type="range" id="noteBorderRadius" min="0" max="30" value="12">
-            <span id="noteBorderRadiusValue">12px</span>
-          </div>
-          <div class="setting-item">
-            <label>Forma predefinida</label>
-            <div class="shape-presets">
-              <button class="shape-btn" data-shape="none" title="Sin forma">▢</button>
-              <button class="shape-btn" data-shape="0px" title="Cuadrado">□</button>
-              <button class="shape-btn" data-shape="15px" title="Redondeado">▢</button>
-              <button class="shape-btn" data-shape="50%" title="Círculo">○</button>
-              <button class="shape-btn" data-shape="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" title="Diamante">◇</button>
-              <button class="shape-btn" data-shape="clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" title="Estrella">★</button>
-              <button class="shape-btn" data-shape="clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" title="Pentágono">⬠</button>
-              <button class="shape-btn" data-shape="clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)" title="Octágono">⬢</button>
-              <button class="shape-btn" data-shape="clip-path: polygon(0% 20%, 60% 20%, 60% 0%, 100% 0%, 100% 80%, 20% 80%, 20% 100%, 0% 100%)" title="Bloque">▣</button>
-            </div>
-          </div>
-          <div class="setting-item">
             <label>Ancho de la nota</label>
-            <input type="range" id="noteWidth" min="300" max="800" value="600">
-            <span id="noteWidthValue">600px</span>
+            <input type="range" id="noteWidth" min="300" max="1200" value="900">
+            <span id="noteWidthValue">900px</span>
           </div>
           <div class="setting-item">
             <label>Tipo de fuente</label>
             <select id="noteFontFamily">
+              <option value="Nunito">Nunito</option>
+              <option value="Quicksand">Quicksand</option>
               <option value="Poppins">Poppins</option>
               <option value="Arial">Arial</option>
               <option value="Georgia">Georgia</option>
-              <option value="Courier New">Courier New</option>
-              <option value="Times New Roman">Times New Roman</option>
               <option value="Verdana">Verdana</option>
             </select>
           </div>
