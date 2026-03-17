@@ -206,6 +206,8 @@ const App = {
   },
 
   async saveSettings() {
+    const getApiUrl = () => window.API_URL || (window.location.origin + '/api');
+    
     const settings = {
       web_background: document.getElementById('webBackgroundColor')?.value || '#fdf6f0',
       web_background_image: document.getElementById('webBackgroundImage')?.value || '',
@@ -222,12 +224,20 @@ const App = {
     };
 
     try {
-      const response = await fetch(`${getApiUrl()}/settings`, {
+      const apiUrl = getApiUrl();
+      console.log('Saving settings to:', apiUrl);
+      
+      const response = await fetch(`${apiUrl}/settings`, {
         method: 'PUT',
-        headers: Auth.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + (localStorage.getItem('noteCuteToken') || '')
+        },
         body: JSON.stringify(settings)
       });
 
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         this.currentSettings = await response.json();
         this.applySettings(this.currentSettings);
@@ -256,10 +266,14 @@ const App = {
         this.toggleSettings(false);
         
         alert('Configuración guardada correctamente');
+      } else {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        alert('Error al guardar configuración: ' + response.status);
       }
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Error al guardar configuración');
+      alert('Error al guardar configuración: ' + error.message);
     }
   },
 
