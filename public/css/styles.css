@@ -12,6 +12,7 @@
   --bg-default: #FDF6F0;
   --bg-sidebar: #FFF5EE;
   --note-default: #FFFFFF;
+  --note-bg: #FFFFFF;
   
   /* Colores pastel adicionales */
   --pastel-pink: #FFD1DC;
@@ -476,7 +477,7 @@ body.login-page {
   width: 100%;
   max-width: 1200px;
   height: 90vh;
-  background: var(--note-default);
+  background: var(--note-bg, var(--note-default));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   display: flex;

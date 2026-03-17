@@ -28,11 +28,8 @@
       
       <div class="notes-list" id="notesList">
       </div>
-      
+       
       <div class="sidebar-footer">
-        <button class="btn-settings" id="settingsBtn">
-          <i class="ph ph-gear"></i> Personalizar
-        </button>
         <button class="btn-logout" id="logoutBtn">
           <i class="ph ph-sign-out"></i> Cerrar Sesión
         </button>
@@ -94,6 +91,38 @@
             </div>
             
             <div class="toolbar-group">
+              <button class="toolbar-btn" data-command="formatBlock" data-value="p" title="Párrafo">
+                P
+              </button>
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" id="noteColorBtn" title="Color de nota">
+                <i class="ph ph-paint-bucket"></i>
+              </button>
+              <input type="color" id="noteColorPicker" value="#ffffff" title="Elegir color de nota" class="color-picker" style="width:30px;height:30px;">
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" id="highlightBtn" title="Resaltador">
+                <i class="ph ph-highlighter"></i>
+              </button>
+              <input type="color" id="highlightColorPicker" value="#ffeaa7" title="Color de resaltador" class="color-picker" style="width:30px;height:30px;">
+              <input type="color" id="textColorPicker" title="Color de texto" class="color-picker">
+            </div>
+            
+            <div class="toolbar-group">
+              <button class="toolbar-btn" id="bgColorBtn" title="Color de fondo">
+                <i class="ph ph-paint-roller"></i>
+              </button>
+              <input type="color" id="bgColorPicker" value="#fdf6f0" title="Elegir color de fondo" class="color-picker" style="width:30px;height:30px;">
+              <button class="toolbar-btn" id="bgImageBtn" title="Imagen de fondo">
+                <i class="ph ph-image"></i>
+              </button>
+              <input type="text" id="bgImageUrl" placeholder="URL imagen" style="width:100px;padding:4px 8px;border:1px solid #ddd;border-radius:4px;font-size:12px;">
+            </div>
+            
+            <div class="toolbar-group">
               <button class="toolbar-btn" id="insertTableBtn" title="Insertar Tabla">
                 <i class="ph ph-table"></i>
               </button>
@@ -122,96 +151,6 @@
         </div>
       </div>
     </main>
-    
-    <aside class="settings-panel" id="settingsPanel">
-      <div class="settings-header">
-        <h2>Personalizar</h2>
-        <button class="btn-close-settings" id="closeSettings"><i class="ph ph-x"></i></button>
-      </div>
-      
-      <div class="settings-content">
-        <div class="settings-section">
-          <h3><i class="ph ph-globe"></i> Fondo de la Web</h3>
-          <div class="setting-item">
-            <label>Color de fondo</label>
-            <input type="color" id="webBackgroundColor" value="#fdf6f0">
-          </div>
-          <div class="setting-item">
-            <label>Imagen de fondo (URL)</label>
-            <input type="text" id="webBackgroundImage" placeholder="https://...">
-          </div>
-        </div>
-        
-        <div class="settings-section">
-          <h3><i class="ph ph-note"></i> Estilo de las Notas</h3>
-          <div class="setting-item">
-            <label>Color de fondo</label>
-            <input type="color" id="noteColor" value="#ffffff">
-          </div>
-          <div class="setting-item">
-            <label>Color del borde</label>
-            <input type="color" id="noteBorderColor" value="#f0e6e0">
-          </div>
-          <div class="setting-item">
-            <label>Grosor del borde</label>
-            <select id="noteBorderWidth">
-              <option value="0px">Sin borde</option>
-              <option value="1px">1px</option>
-              <option value="2px">2px</option>
-              <option value="3px">3px</option>
-              <option value="4px">4px</option>
-              <option value="5px">5px</option>
-            </select>
-          </div>
-          <div class="setting-item">
-            <label>Ancho de la nota</label>
-            <input type="range" id="noteWidth" min="300" max="1200" value="900">
-            <span id="noteWidthValue">900px</span>
-          </div>
-          <div class="setting-item">
-            <label>Tipo de fuente</label>
-            <select id="noteFontFamily">
-              <option value="Nunito">Nunito</option>
-              <option value="Quicksand">Quicksand</option>
-              <option value="Comfortaa">Comfortaa</option>
-              <option value="Fredoka">Fredoka</option>
-              <option value="Baloo 2">Baloo 2</option>
-              <option value="Patrick Hand">Patrick Hand</option>
-              <option value="Poppins">Poppins</option>
-              <option value="Arial">Arial</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Verdana">Verdana</option>
-            </select>
-          </div>
-          <div class="setting-item">
-            <label>Tamaño de fuente</label>
-            <select id="noteFontSize">
-              <option value="12px">12px</option>
-              <option value="14px">14px</option>
-              <option value="16px">16px</option>
-              <option value="18px">18px</option>
-              <option value="20px">20px</option>
-              <option value="22px">22px</option>
-              <option value="24px">24px</option>
-            </select>
-          </div>
-          <div class="setting-item">
-            <label>
-              <input type="checkbox" id="noteShadow" checked> Sombra
-            </label>
-          </div>
-          <div class="setting-item">
-            <label>Opacidad</label>
-            <input type="range" id="noteOpacity" min="50" max="100" value="100">
-            <span id="noteOpacityValue">100%</span>
-          </div>
-        </div>
-        
-        <div class="settings-actions">
-          <button class="btn btn-primary" id="saveSettingsBtn">Guardar Configuración</button>
-        </div>
-      </div>
-    </aside>
     
     <div class="modal" id="imageModal">
       <div class="modal-content">

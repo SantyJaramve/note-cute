@@ -176,6 +176,66 @@ const Editor = {
         this.noteContent.focus();
       });
     }
+
+    // Note color button
+    const noteColorBtn = document.getElementById('noteColorBtn');
+    const noteColorPicker = document.getElementById('noteColorPicker');
+    
+    if (noteColorBtn && noteColorPicker) {
+      noteColorBtn.addEventListener('click', () => {
+        const noteEditor = document.getElementById('noteEditor');
+        if (noteEditor) {
+          noteEditor.style.setProperty('--note-bg', noteColorPicker.value);
+        }
+      });
+      
+      noteColorPicker.addEventListener('input', (e) => {
+        const noteEditor = document.getElementById('noteEditor');
+        if (noteEditor) {
+          noteEditor.style.setProperty('--note-bg', e.target.value);
+        }
+      });
+    }
+
+    // Background color button
+    const bgColorBtn = document.getElementById('bgColorBtn');
+    const bgColorPicker = document.getElementById('bgColorPicker');
+    const bgImageUrl = document.getElementById('bgImageUrl');
+    const bgImageBtn = document.getElementById('bgImageBtn');
+    
+    if (bgColorBtn && bgColorPicker) {
+      bgColorBtn.addEventListener('click', () => {
+        document.body.style.background = bgColorPicker.value;
+        document.body.style.backgroundImage = '';
+      });
+      
+      bgColorPicker.addEventListener('input', (e) => {
+        document.body.style.background = e.target.value;
+        document.body.style.backgroundImage = '';
+      });
+    }
+    
+    if (bgImageBtn && bgImageUrl) {
+      bgImageBtn.addEventListener('click', () => {
+        const url = bgImageUrl.value.trim();
+        if (url) {
+          document.body.style.backgroundImage = `url(${url})`;
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+        }
+      });
+      
+      bgImageUrl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const url = bgImageUrl.value.trim();
+          if (url) {
+            document.body.style.backgroundImage = `url(${url})`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+          }
+        }
+      });
+    }
   },
 
   setupImageModal() {
