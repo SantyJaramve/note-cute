@@ -206,32 +206,19 @@ const App = {
   },
 
   async saveSettings() {
-    const activeShapeBtn = document.querySelector('.shape-btn.active');
-    const shapeValue = activeShapeBtn ? activeShapeBtn.dataset.shape : '';
-    
-    let clipPath = '';
-    let borderRadius = document.getElementById('noteBorderRadius').value + 'px';
-    
-    if (shapeValue && shapeValue.includes('clip-path')) {
-      clipPath = shapeValue.replace('clip-path: ', '');
-      borderRadius = '0';
-    } else if (shapeValue && shapeValue !== 'none') {
-      borderRadius = shapeValue;
-    }
-
     const settings = {
-      web_background: document.getElementById('webBackgroundColor').value,
-      web_background_image: document.getElementById('webBackgroundImage').value,
-      default_note_color: document.getElementById('noteColor').value,
-      default_note_border_color: document.getElementById('noteBorderColor').value,
-      default_note_border: document.getElementById('noteBorderWidth').value,
-      default_note_border_radius: borderRadius,
-      default_note_width: document.getElementById('noteWidth').value + 'px',
-      default_note_font_family: document.getElementById('noteFontFamily').value,
-      default_note_font_size: document.getElementById('noteFontSize').value,
-      default_note_shadow: document.getElementById('noteShadow').checked ? 1 : 0,
-      default_note_opacity: parseInt(document.getElementById('noteOpacity').value),
-      default_note_clip_path: clipPath
+      web_background: document.getElementById('webBackgroundColor')?.value || '#fdf6f0',
+      web_background_image: document.getElementById('webBackgroundImage')?.value || '',
+      default_note_color: document.getElementById('noteColor')?.value || '#ffffff',
+      default_note_border_color: document.getElementById('noteBorderColor')?.value || '#f0e6e0',
+      default_note_border: document.getElementById('noteBorderWidth')?.value || '1px',
+      default_note_border_radius: '16px',
+      default_note_width: (document.getElementById('noteWidth')?.value || 900) + 'px',
+      default_note_font_family: document.getElementById('noteFontFamily')?.value || 'Nunito',
+      default_note_font_size: document.getElementById('noteFontSize')?.value || '16px',
+      default_note_shadow: document.getElementById('noteShadow')?.checked ? 1 : 1,
+      default_note_opacity: parseInt(document.getElementById('noteOpacity')?.value || 100),
+      default_note_clip_path: ''
     };
 
     try {
@@ -245,13 +232,18 @@ const App = {
         this.currentSettings = await response.json();
         this.applySettings(this.currentSettings);
         
+        document.body.style.background = settings.web_background;
+        if (settings.web_background_image) {
+          document.body.style.backgroundImage = `url(${settings.web_background_image})`;
+          document.body.style.backgroundSize = 'cover';
+        }
+        
         if (Editor.currentNote) {
           Editor.currentNote.style = {
             backgroundColor: settings.default_note_color,
             borderColor: settings.default_note_border_color,
             borderWidth: settings.default_note_border,
             borderRadius: settings.default_note_border_radius,
-            clipPath: settings.default_note_clip_path,
             width: settings.default_note_width,
             fontFamily: settings.default_note_font_family,
             fontSize: settings.default_note_font_size,
@@ -262,9 +254,12 @@ const App = {
         }
 
         this.toggleSettings(false);
+        
+        alert('Configuración guardada correctamente');
       }
     } catch (error) {
       console.error('Error saving settings:', error);
+      alert('Error al guardar configuración');
     }
   },
 

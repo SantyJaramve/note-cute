@@ -146,14 +146,25 @@ const Editor = {
 
     const highlightBtn = document.getElementById('highlightBtn');
     const textColorPicker = document.getElementById('textColorPicker');
+    const highlightColorPicker = document.getElementById('highlightColorPicker');
 
     if (highlightBtn) {
       highlightBtn.addEventListener('click', () => {
         highlightBtn.classList.toggle('highlight-active');
         if (highlightBtn.classList.contains('highlight-active')) {
-          document.execCommand('backColor', false, '#ffeaa7');
+          const color = highlightColorPicker ? highlightColorPicker.value : '#ffeaa7';
+          document.execCommand('backColor', false, color);
         } else {
           document.execCommand('backColor', false, 'transparent');
+        }
+        this.noteContent.focus();
+      });
+    }
+
+    if (highlightColorPicker) {
+      highlightColorPicker.addEventListener('input', (e) => {
+        if (highlightBtn.classList.contains('highlight-active')) {
+          document.execCommand('backColor', false, e.target.value);
         }
         this.noteContent.focus();
       });
@@ -261,36 +272,35 @@ const Editor = {
     if (!resizeHandle) {
       resizeHandle = document.createElement('div');
       resizeHandle.className = 'resize-handle';
-      resizeHandle.style.cssText = 'position:absolute;bottom:-8px;right:-8px;width:20px;height:20px;background:#6C5CE7;border-radius:50%;cursor:se-resize;z-index:100;display:none;';
+      resizeHandle.style.cssText = 'position:absolute;bottom:-8px;right:-8px;width:20px;height:20px;background:#B5A8D9;border-radius:50%;cursor:se-resize;z-index:100;display:none;';
       wrapper.appendChild(resizeHandle);
     }
 
     let deleteHandle = wrapper.querySelector('.delete-handle');
     if (!deleteHandle) {
       deleteHandle = document.createElement('div');
+      deleteHandle.innerHTML = '<i class="ph-bold ph-x" style="font-size:12px;"></i>';
       deleteHandle.className = 'delete-handle';
-      deleteHandle.innerHTML = '✕';
-      deleteHandle.style.cssText = 'position:absolute;top:-10px;right:-10px;width:22px;height:22px;background:#e74c3c;color:white;border-radius:50%;cursor:pointer;z-index:101;display:none;font-size:12px;line-height:22px;text-align:center;font-weight:bold;';
+      deleteHandle.style.cssText = 'position:absolute;top:-10px;right:-10px;width:24px;height:24px;background:#FFB4B4;color:white;border-radius:50%;cursor:pointer;z-index:101;display:none;display:flex;align-items:center;justify-content:center;';
       wrapper.appendChild(deleteHandle);
     }
 
     const img = wrapper.querySelector('img');
     const canvas = wrapper.querySelector('.drawing-canvas');
-    let activeWrapper = null;
 
     const handleMouseDown = function(e) {
-      activeWrapper = wrapper;
-      
       if (wrapper.classList.contains('drawing-locked')) return;
       
       if (e.target === resizeHandle || resizeHandle.contains(e.target)) {
-        wrapper._resizing = true;
+        wrapper._isResizing = true;
         wrapper._startX = e.clientX;
         wrapper._startY = e.clientY;
         wrapper._initialWidth = img.offsetWidth;
-        wrapper._oldCanvasData = canvas.toDataURL();
-        wrapper._oldCanvasWidth = canvas.width;
-        wrapper._oldCanvasHeight = canvas.height;
+        if (canvas) {
+          wrapper._oldCanvasData = canvas.toDataURL();
+          wrapper._oldCanvasWidth = canvas.width;
+          wrapper._oldCanvasHeight = canvas.height;
+        }
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -299,61 +309,50 @@ const Editor = {
       if (e.target === deleteHandle || deleteHandle.contains(e.target)) return;
       
       if (e.target === img || e.target === wrapper || wrapper.contains(e.target)) {
-        wrapper._dragging = true;
-        wrapper._startX = e.clientX;
-        wrapper._startY = e.clientY;
-        wrapper._initialLeft = wrapper.offsetLeft;
-        wrapper._initialTop = wrapper.offsetTop;
+        wrapper._isDragging = true;
+        wrapper._dragStartX = e.clientX;
+        wrapper._dragStartY = e.clientY;
+        wrapper._originalLeft = parseInt(wrapper.style.left) || 0;
+        wrapper._originalTop = parseInt(wrapper.style.top) || 0;
         wrapper.style.zIndex = '1000';
         e.preventDefault();
       }
     };
 
     const handleMouseMove = function(e) {
-      if (!activeWrapper || activeWrapper !== wrapper) return;
-      
-      if (wrapper._resizing) {
+      if (wrapper._isResizing) {
         const dx = e.clientX - wrapper._startX;
         const newWidth = Math.max(50, wrapper._initialWidth + dx);
         img.style.width = newWidth + 'px';
         img.style.height = 'auto';
-      } else if (wrapper._dragging) {
-        const dx = e.clientX - wrapper._startX;
-        const dy = e.clientY - wrapper._startY;
-        wrapper.style.left = (wrapper._initialLeft + dx) + 'px';
-        wrapper.style.top = (wrapper._initialTop + dy) + 'px';
+      } else if (wrapper._isDragging) {
+        const dx = e.clientX - wrapper._dragStartX;
+        const dy = e.clientY - wrapper._dragStartY;
+        wrapper.style.left = (wrapper._originalLeft + dx) + 'px';
+        wrapper.style.top = (wrapper._originalTop + dy) + 'px';
       }
     };
 
     const handleMouseUp = function() {
-      if (!activeWrapper || activeWrapper !== wrapper) return;
-      
-      if (wrapper._resizing && canvas && wrapper._oldCanvasData) {
+      if (wrapper._isResizing && canvas && wrapper._oldCanvasData) {
         const newWidth = img.offsetWidth;
         const scale = newWidth / wrapper._initialWidth;
-        const newCanvasWidth = Math.round(wrapper._oldCanvasWidth * scale);
-        const newCanvasHeight = Math.round(wrapper._oldCanvasHeight * scale);
         
-        canvas.width = newCanvasWidth;
-        canvas.height = newCanvasHeight;
+        canvas.width = Math.round(wrapper._oldCanvasWidth * scale);
+        canvas.height = Math.round(wrapper._oldCanvasHeight * scale);
         
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
         
         const tempImg = new Image();
         tempImg.onload = function() {
-          ctx.drawImage(tempImg, 0, 0, newCanvasWidth, newCanvasHeight);
+          ctx.drawImage(tempImg, 0, 0, canvas.width, canvas.height);
         };
         tempImg.src = wrapper._oldCanvasData;
-        
-        delete wrapper._oldCanvasData;
-        delete wrapper._oldCanvasWidth;
-        delete wrapper._oldCanvasHeight;
       }
       
-      wrapper._dragging = false;
-      wrapper._resizing = false;
+      wrapper._isDragging = false;
+      wrapper._isResizing = false;
       wrapper.style.zIndex = '';
       
       if (wrapper.classList.contains('selected')) {
@@ -361,8 +360,6 @@ const Editor = {
         wrapper.dataset.left = wrapper.style.left;
         wrapper.dataset.top = wrapper.style.top;
       }
-      
-      activeWrapper = null;
     };
 
     wrapper.onmousedown = handleMouseDown;
